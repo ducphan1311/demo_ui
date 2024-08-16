@@ -54,6 +54,10 @@ dependencies:
   # cached image
   cached_network_image: ^3.3.0
 
+  extended_text_field:
+  styled_text:
+  flutter_html:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
