@@ -21,7 +21,7 @@ class GuestBodyWidgetState extends State<GuestBodyWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(child: AutoCompleteTextField(key: key, onSearching: (String query) {
-            return ['a', 'b', 'c', 'd'].map((e) => Item(e)).toList();
+            return ['a', 'b', 'c', 'd', 'あ','ｂ','ｃ','ｄ'].map((e) => Item(e)).toList();
           },),),
           Text(widget.defaultData),
         ],

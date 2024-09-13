@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:extended_text_library/extended_text_library.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,7 @@ class MySpecialTextSpanBuilder extends SpecialTextSpanBuilder {
       {TextStyle? textStyle,
       SpecialTextGestureTapCallback? onTap,
       int? index}) {
+    log('createSpecialText: $flag -- $index');
     if (flag == '') {
       return null;
     }

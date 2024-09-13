@@ -24,10 +24,10 @@ class HomeBodyWidgetState extends State<HomeBodyWidget> {
           AutoCompleteTextField<Item>(
             key: key,
             onSearching: (String query) {
-              return ['a', 'b', 'c', 'd'].map((e) => Item(e)).toList();
+              return ['a', 'b', 'c', 'd', 'あ','ｂ','ｃ','ｄ'].map((e) => Item(e)).toList();
             },
           ),
-          Text(widget.defaultData),
+          Expanded(child: Text(widget.defaultData)),
         ],
       ),
     );

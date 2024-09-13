@@ -97,6 +97,7 @@ class AutoCompleteTextFieldState<T extends AutoCompleteItem> extends State<AutoC
   late TextEditingController controller;
   late FocusNode focusNode;
   String currentText = '';
+  late final String triggerChar = '';
 
   Widget _buildTextField(BuildContext context) {
     return ExtendedTextField(
@@ -108,9 +109,9 @@ class AutoCompleteTextFieldState<T extends AutoCompleteItem> extends State<AutoC
       textCapitalization: widget.textCapitalization,
       decoration: widget.decoration ??
           InputDecoration(
-            enabledBorder: InputBorder.none,
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
+            // enabledBorder: InputBorder.none,
+            // border: InputBorder.none,
+            // focusedBorder: InputBorder.none,
             hintText: widget.hintText,
           ),
       style: widget.style,
@@ -131,9 +132,9 @@ class AutoCompleteTextFieldState<T extends AutoCompleteItem> extends State<AutoC
         }
         currentText = newText;
         if (currentText.split(' ').last.contains('#')) {
-          updateOverlay(context: context, query: currentText.split('#').last);
-        } else if (currentText.split(' ').last.contains('@')) {
-          updateOverlay(context: context, query: currentText.split('@').last);
+          updateOverlay(context: context, query: currentText.split('').last);
+        } else if (currentText.split(' ').last.contains(triggerChar)) {
+          updateOverlay(context: context, query: currentText.split('').last);
         } else {
           filteredSuggestions = [];
         }
@@ -181,7 +182,7 @@ class AutoCompleteTextFieldState<T extends AutoCompleteItem> extends State<AutoC
             child: CompositedTransformFollower(
                 link: _layerLink,
                 showWhenUnlinked: false,
-                offset: Offset(0.0, y - 60),
+                offset: Offset(0.0, y),
                 child: SizedBox(
                     width: width,
                     child: Card(
@@ -242,12 +243,25 @@ class AutoCompleteTextFieldState<T extends AutoCompleteItem> extends State<AutoC
                                         for (final e in texts ?? <String>[]) {
                                           newText += '\$$e\$ ';
                                         }
-                                        controller.text = controller.text
-                                            .replaceFirst(
-                                            '@${controller.text.split(' ').last.split('@').last}',
-                                            newText,
-                                            controller.text
-                                                .lastIndexOf('@'));
+                                        log('controller.text: $triggerChar${controller.text.split(' ').last.split(triggerChar).last} -- ${controller.text.split(' ').toList().contains(newText.trim())} ${controller.text
+                                            .lastIndexOf(triggerChar)} -- $newText -- ${controller.text}');
+                                        // if (!controller.text.split(' ').toList().contains(newText.trim())) {
+                                          controller.text = controller.text
+                                              .replaceFirst(
+                                              '$triggerChar${controller.text.split(' ').last.split(triggerChar).last}',
+                                              newText,
+                                              controller.text
+                                                  .lastIndexOf(triggerChar) - 1);
+                                        // } else {
+                                        //   controller.text = controller.text
+                                        //       .replaceFirst(
+                                        //       '$triggerChar${controller.text.split(' ').last.split(triggerChar).last}',
+                                        //       '',
+                                        //       controller.text
+                                        //           .lastIndexOf(triggerChar) - 1);
+                                        // }
+
+
                                         controller.selection =
                                             TextSelection.fromPosition(
                                                 TextPosition(
@@ -324,7 +338,7 @@ class AutoCompleteTextFieldState<T extends AutoCompleteItem> extends State<AutoC
 
   Future<List<T>> getUserSuggestions() async {
     final keyword =
-    controller.text.split(' ').last.replaceAll('@', '');
+    controller.text.split(' ').last.replaceAll(triggerChar, '');
     return widget.onSearching(keyword);
   }
 
